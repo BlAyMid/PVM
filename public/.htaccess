@@ -1,0 +1,11 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # отдаём существующие файлы и директории напрямую
+    RewriteCond %{REQUEST_FILENAME} -f [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^ - [L]
+
+    # иначе перенаправляем на index.php для обработки роутером
+    RewriteRule ^ index.php [L]
+</IfModule>

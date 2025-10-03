@@ -1,0 +1,31 @@
+services:
+  app:
+    build: .
+    container_name: pvm_app
+    ports:
+      - "8080:80"
+    environment:
+      - APACHE_DOCUMENT_ROOT=/var/www/html/public
+    volumes:
+      - ./:/var/www/html
+      - ./public/.htaccess:/var/www/html/public/.htaccess
+    depends_on:
+      - db
+    command: bash -lc '[ -f vendor/autoload.php ] && echo "Composer deps present" || composer install --no-interaction --prefer-dist --optimize-autoloader; apache2-foreground'
+  db:
+    image: mysql:8.0
+    container_name: pvm_db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: pvm
+      MYSQL_USER: pvm
+      MYSQL_PASSWORD: pvm
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./scr/db/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+volumes:
+  db_data:
+    driver: local
