@@ -14,7 +14,6 @@
             <button type="submit">Выйти</button>
         </form>
     </section>
-
     <section>
         <h2>REST API</h2>
         <p>Для работы API используйте заголовок <code>X-API-KEY</code> со значением из .env.</p>
